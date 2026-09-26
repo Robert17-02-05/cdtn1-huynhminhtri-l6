@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+.ipynb_checkpoints/[cite: 2]
+.env[cite: 2]
+*.log[cite: 2]
+data/raw/[cite: 2]
+*.parquet[cite: 2]
