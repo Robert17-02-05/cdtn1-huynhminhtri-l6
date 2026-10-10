@@ -1,42 +1,79 @@
-# Đặc tả yêu cầu phần mềm (SRS) - Luồng L6: Kho dữ liệu bán hàng
+# Đặc tả yêu cầu phần mềm (SRS) - Luồng L6: Kho dữ liệu bán hàng (Smart CRM DWH)
 
-## 1. Bảng thuật ngữ (Glossary)
+## 1. Tổng quan hệ thống
+**1.1. Phạm vi dự án**
+Dự án tập trung xây dựng Kho dữ liệu báo cáo (Smart CRM DWH) cho chuỗi Mekong Mobile. Hệ thống sẽ tự động hóa luồng trích xuất (ETL) dữ liệu đơn hàng từ 24 file Excel của các chi nhánh, làm sạch các lỗi định dạng và nạp vào kho dữ liệu tập trung. Mục tiêu giải quyết vấn đề trễ nải số liệu và cung cấp Dashboard trực quan đa chiều cho Ban giám đốc.
+
+**1.2. Người dùng chính (Actor)**
+*   **Chuyên viên dữ liệu (Data Engineer):** Vận hành tiến trình ETL, theo dõi log lỗi.
+*   **Quản lý cửa hàng:** Xem báo cáo doanh thu cấp độ chi nhánh.
+*   **Ban giám đốc:** Phân tích doanh thu toàn hệ thống, xem xu hướng và đưa ra quyết định kinh doanh.
+
+**1.3. Bảng thuật ngữ (Glossary)**
 | Thuật ngữ / Viết tắt | Ý nghĩa / Định nghĩa chi tiết |
 | :--- | :--- |
-| **DWH (Data Warehouse)** | Kho dữ liệu tập trung chứa dữ liệu đã được làm sạch để phục vụ phân tích. |
-| **ETL** | Extract, Transform, Load - Quy trình trích xuất, biến đổi (làm sạch) và nạp dữ liệu. |
-| **Staging** | Vùng lưu trữ dữ liệu tạm thời trước khi nạp chính thức vào DWH. |
+| **DWH (Data Warehouse)** | Kho dữ liệu tập trung, được thiết kế theo Lược đồ hình sao (Star Schema). |
+| **ETL** | Trích xuất (Extract) - Biến đổi/Làm sạch (Transform) - Nạp dữ liệu (Load). |
+| **Staging Area** | Vùng đệm lưu trữ dữ liệu tạm thời trước khi nạp chính thức vào DWH. |
+| **GWT** | Given – When – Then, dùng để mô tả tiêu chí chấp nhận (Acceptance Criteria). |
+| **MoSCoW** | Phương pháp đánh giá độ ưu tiên: MUST, SHOULD, COULD, WON'T. |
 
-## 2. Tổng quan hệ thống (Overview)
-Hệ thống Kho dữ liệu báo cáo (Smart CRM DWH) tự động hóa việc thu thập, làm sạch dữ liệu đơn hàng từ 24 file Excel của các chi nhánh. Hệ thống giúp loại bỏ sai sót thủ công và cung cấp Dashboard trực quan đa chiều cho Ban giám đốc ra quyết định.
+## 2. Danh sách User Story
 
-## 3. Danh sách User Story
-* **US1:** Là Phó Tổng giám đốc, tôi muốn xem báo cáo tổng hợp doanh thu mỗi tháng của từng cửa hàng để biết được cửa hàng nào đang kinh doanh đi xuống (MUST).
-* **US2:** Là Quản lý cửa hàng, tôi muốn xem báo cáo doanh thu theo ngày của chi nhánh mình và so sánh với các cửa hàng khác (MUST).
-* **US3:** Là Ban giám đốc, tôi muốn hệ thống tự động tổng hợp dữ liệu doanh thu từ 24 cửa hàng để không phải chờ đợi 5-7 ngày thủ công (MUST).
-* **US4:** Là Chuyên viên dữ liệu, tôi muốn script ETL tự động chuẩn hóa các cột lỗi (ngày tháng, tiền tệ) để nạp dữ liệu sạch vào kho (MUST).
-* **US5:** Là Ban giám đốc, tôi muốn phân tích doanh thu theo chiều sản phẩm và cửa hàng để biết dòng máy bán chạy nhất (MUST).
-* **US6:** Là Chuyên viên DL, tôi muốn hệ thống tự động ghi log dòng dữ liệu lỗi vào bảng `dq_error_log` (SHOULD).
-* **US7:** Là Ban giám đốc, tôi muốn xem biểu đồ xu hướng (Trendline) so sánh doanh thu cùng kỳ năm ngoái (COULD).
-* **US8:** Là Chuyên viên DL, tôi muốn CSDL từ chối nạp bản ghi có số lượng/đơn giá âm (MUST).
+| Mã | Vai trò | Nội dung (Tôi muốn... để...) | Ưu tiên |
+| :--- | :--- | :--- | :--- |
+| **US01** | Phó Tổng giám đốc | Xem báo cáo doanh thu mỗi tháng của từng cửa hàng để biết nơi nào kinh doanh đi xuống. | MUST |
+| **US02** | Quản lý cửa hàng | Xem báo cáo doanh thu theo ngày của chi nhánh mình và so sánh với cửa hàng khác. | MUST |
+| **US03** | Ban giám đốc | Hệ thống tự động tổng hợp dữ liệu từ 24 cửa hàng để không phải chờ tổng hợp thủ công. | MUST |
+| **US04** | Chuyên viên DL | Script ETL tự động chuẩn hóa định dạng (ngày tháng, tiền tệ) để nạp dữ liệu sạch vào kho. | MUST |
+| **US05** | Ban giám đốc | Phân tích doanh thu theo chiều sản phẩm và cửa hàng để biết dòng máy bán chạy nhất. | MUST |
+| **US06** | Chuyên viên DL | Hệ thống tự động ghi log dữ liệu lỗi vào bảng `dq_error_log` để tiện đối soát với chi nhánh. | SHOULD |
+| **US07** | Ban giám đốc | Xem biểu đồ xu hướng (Trendline) để so sánh doanh thu cùng kỳ năm ngoái. | COULD |
+| **US08** | Chuyên viên DL | Hệ thống từ chối nạp bản ghi có số lượng/đơn giá âm để bảo vệ tính toàn vẹn tài chính. | MUST |
 
-## 4. Danh sách Use Case & Đặc tả
-* **Danh sách Actor:** Chuyên viên dữ liệu, Quản lý cửa hàng, Ban giám đốc.
-* **Danh sách Use Case:** (1) Trích xuất dữ liệu, (2) Làm sạch dữ liệu, (3) Ghi log lỗi `<<include>>`, (4) Báo lỗi cấu trúc `<<extend>>`, (5) Nạp dữ liệu vào DWH, (6) Xem báo cáo chi nhánh, (7) Xem báo cáo tổng hợp, (8) Phân tích đa chiều.
-* **Đặc tả Use Case UC02: Làm sạch và chuẩn hóa dữ liệu**
-  * **Tiền điều kiện:** Trích xuất file Excel thành công.
-  * **Luồng chính:** (1) Actor chạy lệnh Transform. (2) Hệ thống chuẩn hóa định dạng thời gian YYYY-MM-DD và số tiền. (3) Tạo định danh "Mã_Đơn_Mới". (4) Đẩy dòng hợp lệ vào Staging.
-  * **Luồng ngoại lệ:** Nếu dữ liệu hỏng nặng không thể ép kiểu, hệ thống kích hoạt UC03 (Ghi log), lưu vào bảng `dq_error_log` và tự động xử lý dòng tiếp theo (không crash).
+## 3. Use Case & Đặc tả chi tiết
 
-## 5. Yêu cầu chức năng (FR) và Phi chức năng (NFR)
-* **FR01:** Hệ thống phải có khả năng trích xuất dữ liệu từ các file `.xlsx` trong thư mục chỉ định.
-* **FR02:** Hệ thống phải tự động tính toán lại cột "Thành tiền" dựa trên "Số lượng" và "Đơn giá".
-* **NFR01 (Hiệu năng):** Thời gian chạy toàn bộ tiến trình ETL cho 24 file (khoảng 50,000 dòng) không được vượt quá 3 phút.
-* **NFR02 (Tính khả dụng):** Dashboard phải tải và phản hồi các thao tác lọc dữ liệu dưới 3 giây.
+**3.1. Danh sách Use Case**
+| Mã UC | Tên Use Case | Actor thực hiện | Phân loại |
+| :--- | :--- | :--- | :--- |
+| **UC01** | Trích xuất dữ liệu Excel | Chuyên viên dữ liệu | MUST |
+| **UC02** | Làm sạch và chuẩn hóa dữ liệu | Chuyên viên dữ liệu | MUST |
+| **UC03** | Ghi log lỗi vào Database | Hệ thống (`<<include>>`) | MUST |
+| **UC04** | Cảnh báo lỗi cấu trúc | Hệ thống (`<<extend>>`) | SHOULD |
+| **UC05** | Nạp dữ liệu vào DWH | Chuyên viên dữ liệu | MUST |
+| **UC06** | Xem báo cáo chi nhánh | Quản lý cửa hàng | MUST |
+| **UC07** | Xem báo cáo tổng hợp | Ban giám đốc | MUST |
+| **UC08** | Phân tích đa chiều | Ban giám đốc | MUST |
 
-## 6. Bảng truy vết yêu cầu (Traceability Matrix)
+**3.2. Đặc tả Use Case UC02: Làm sạch và chuẩn hóa dữ liệu**
+*   **Mô tả:** Tiến trình ETL đọc dữ liệu thô, loại bỏ rác, ép kiểu ngày tháng và tính toán lại trường doanh thu.
+*   **Tiêu chí chấp nhận (GWT):**
+    *   **GWT01 (Chuẩn hóa ngày):** *Given* ngày mua có định dạng tự do, *When* chạy Transform, *Then* hệ thống lưu trữ dưới chuẩn duy nhất `YYYY-MM-DD`.
+    *   **GWT02 (Tính thành tiền):** *Given* cột Thành tiền bị sai, *When* chạy luồng xử lý, *Then* hệ thống tự động tính lại bằng công thức `So luong * Don gia`.
+    *   **GWT03 (Xử lý lỗi - Ngoại lệ):** *Given* dữ liệu chứa số lượng âm hoặc khoảng trống, *When* ép kiểu thất bại, *Then* hệ thống ghi dòng đó vào `dq_error_log` (UC03) và tiếp tục xử lý dòng tiếp theo.
+
+## 4. Yêu cầu chức năng (FR) và Phi chức năng (NFR)
+
+**4.1. Yêu cầu chức năng**
+| Mã | Mô tả yêu cầu hệ thống |
+| :--- | :--- |
+| **FR01** | Hệ thống phải đọc và trích xuất thành công dữ liệu từ định dạng `.xlsx` trong thư mục nguồn. |
+| **FR02** | Hệ thống phải tự động tính toán lại cột "Thành tiền" = Số lượng x Đơn giá. |
+| **FR03** | Hệ thống phải chuẩn hóa mọi định dạng thời gian về chuẩn ISO 8601 (`YYYY-MM-DD`). |
+| **FR04** | Hệ thống phải phát hiện bản ghi lỗi (âm, thiếu mã) và ghi vào bảng `dq_error_log`. |
+
+**4.2. Yêu cầu phi chức năng**
+| Mã | Tiêu chí | Ngưỡng đo lường bắt buộc |
+| :--- | :--- | :--- |
+| **NFR01** | Hiệu năng | Thời gian chạy luồng ETL cho 50,000 dòng từ 24 file **≤ 3 phút**. |
+| **NFR02** | Tính khả dụng| Dashboard báo cáo trên Web phản hồi thao tác lọc **≤ 3 giây**. |
+| **NFR03** | Độ tin cậy | Luồng ETL không crash khi gặp file hỏng, ghi log lỗi thành công **100%**. |
+
+## 5. Bảng truy vết yêu cầu (Traceability Matrix)
 | ID Nguồn (User Story) | Use Case tương ứng | Yêu cầu hệ thống (FR/NFR) | Trạng thái |
 | :--- | :--- | :--- | :--- |
-| US3 | UC01, UC05 | FR01, NFR01 | Đã thiết kế |
-| US4, US8 | UC02, UC03 | FR02 | Đã thiết kế |
-| US1, US5 | UC07, UC08 | NFR02 | Đã thiết kế |
+| **US03** | UC01, UC05 | FR01, NFR01 | Đã thiết kế |
+| **US04, US08** | UC02, UC04 | FR02, FR03, FR04 | Đã thiết kế |
+| **US06** | UC03 | FR04, NFR03 | Đã thiết kế |
+| **US01, US05, US07** | UC07, UC08 | NFR02 | Đã thiết kế |
+| **US02** | UC06 | NFR02 | Đã thiết kế |
