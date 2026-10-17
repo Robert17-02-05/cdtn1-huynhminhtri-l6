@@ -1,12 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="app.diagrams.net">
-  <diagram name="Page-1" id="i2ilWDsT7CmpME7qEGHQ">
-    <mxGraphModel dx="1241" dy="1735" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <diagram name="Page-1" id="OxnNsh-0L4XJrDr9mdHG">
+    <mxGraphModel dx="1493" dy="1864" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="legend_uc" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=10;" value="&lt;b&gt;Chú thích:&lt;/b&gt;&lt;br&gt;- Hình người: Tác nhân (Actor)&lt;br&gt;- Hình Oval: Chức năng (Use Case)&lt;br&gt;- Mũi tên nét đứt: Quan hệ &amp;lt;&amp;lt;include&amp;gt;&amp;gt; / &amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry height="70" width="220" x="10" y="-90" as="geometry" />
+        </mxCell>
         <mxCell id="V7mD-9CzB7P8aaRnCg3e-1" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
-          <mxGeometry height="540" width="540" x="170" y="-25" as="geometry" />
+          <mxGeometry height="540" width="540" x="170" y="-10" as="geometry" />
         </mxCell>
         <mxCell id="V7mD-9CzB7P8aaRnCg3e-2" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;aspect=fixed;" value="" vertex="1">
           <mxGeometry height="60" width="60" x="40" y="80" as="geometry" />
@@ -153,7 +155,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="V7mD-9CzB7P8aaRnCg3e-34" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Hệ thống Kho dữ liệu báo cáo" vertex="1">
-          <mxGeometry height="30" width="190" x="360" y="-20" as="geometry" />
+          <mxGeometry height="30" width="190" x="345" as="geometry" />
         </mxCell>
         <mxCell id="V7mD-9CzB7P8aaRnCg3e-35" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="&lt;br&gt;Ghi log dữ liệu lỗi&lt;br&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="50" width="110" x="425" y="175" as="geometry" />
