@@ -11,9 +11,7 @@
 *Ghi chú:*
 - Nếu ở bài nộp này sinh viên **hoàn toàn không sử dụng bất kỳ công cụ AI nào**, hãy ghi rõ `Không sử dụng công cụ AI` vào bảng.
 
-<br>
-<hr style="border: 2px solid #2c3e50; border-radius: 5px;" />
-<br>
+
 
 ### III. CAM KẾT VỀ LIÊM CHÍNH HỌC THUẬT
 
@@ -24,7 +22,9 @@
 * **Ngày khai báo:** 06/10/2026
 
 
-
+<br>
+<hr style="border: 2px solid #2c3e50; border-radius: 5px;" />
+<br>
 
 
 # Khai báo sử dụng công cụ AI hỗ trợ
