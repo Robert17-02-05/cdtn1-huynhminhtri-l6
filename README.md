@@ -21,3 +21,18 @@ Hệ thống giải quyết bài toán tổng hợp dữ liệu doanh thu thủ 
     *   [x] Khắc phục các lỗi thiết kế theo feedback giảng viên (`docs/thay-doi-thiet-ke.md`).
     *   [ ] Dựng cấu trúc thư mục tách lớp `src/` (extract, transform, quality, load).
     *   [ ] Viết script pipeline ETL chạy bằng 1 lệnh.
+
+### 3. Hướng dẫn cài đặt và chạy hệ thống cục bộ (Phép thử "Thư mục trống")
+Để clone và chạy lại toàn bộ hệ thống trên một thư mục trống, hãy thực hiện lần lượt các lệnh sau trên Terminal:
+
+**Bước 1: Clone repository và di chuyển vào thư mục dự án**
+```bash
+git clone <đường-dẫn-repo-github-của-bạn>
+cd cdtn1-huynhminhtri-l6
+**Bước 2: Tạo và kích hoạt môi trường ảo (venv)**
+python -m venv venv
+.\venv\Scripts\activate
+**Bước 3: Cài đặt các thư viện phụ thuộc**
+pip install pandas sqlite3 pytest streamlit matplotlib
+**Bước 4: Chạy luồng ETL và nạp dữ liệu vào Data Warehouse (DWH)**
+python src/load/dwh_builder.py

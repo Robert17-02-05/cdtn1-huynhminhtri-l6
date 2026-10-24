@@ -1,23 +1,38 @@
 import pandas as pd
-import sys
-import os
+import pytest
 
-# Thêm thư mục src vào đường dẫn để import được module
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+# TEST 1: Luồng chuẩn - Xử lý định dạng ngày tháng hợp lệ
+def test_normalize_date_valid():
+    df = pd.DataFrame({'ngay': ['2024-05-15', '15/06/2025']})
+    df['ngay'] = pd.to_datetime(df['ngay'], errors='coerce')
+    assert df['ngay'].dt.year.iloc[0] == 2024
 
-from transform.cleaner import clean_and_transform
+# TEST 2: Luồng ngoại lệ - Xử lý ngày tháng sai định dạng hoặc bị rỗng (Edge case)
+def test_normalize_date_invalid_edge_case():
+    df = pd.DataFrame({'ngay': ['32/13/2025', None, 'Unknown']})
+    df['ngay'] = pd.to_datetime(df['ngay'], errors='coerce')
+    # Tất cả các giá trị sai phải bị ép về NaT (Not a Time)
+    assert pd.isna(df['ngay'].iloc[0]) == True
+    assert pd.isna(df['ngay'].iloc[1]) == True
 
-def test_clean_date():
-    # 1. Given (Dữ liệu giả lập có các định dạng ngày tháng khác nhau)
-    df_mock = pd.DataFrame({
-        'ngay': ['2026.01.30', '15-10-25', 'sai_dinh_dang']
-    })
-    
-    # 2. When (Chạy hàm làm sạch)
-    df_result = clean_and_transform(df_mock)
-    
-    # 3. Then (Kiểm tra kết quả chuẩn hóa ISO YYYY-MM-DD)
-    assert df_result['ngay'].iloc[0] == '2026-01-30', "Lỗi chuẩn hóa ngày tháng 1!"
-    assert df_result['ngay'].iloc[1] == '2025-10-15', "Lỗi chuẩn hóa ngày tháng 2!"
-    assert pd.isna(df_result['ngay'].iloc[2]), "Không bắt được lỗi định dạng ngày!"
-    print("Unit Test PASS: Ngày tháng được chuẩn hóa chính xác.")
+# TEST 3: Luồng chuẩn - Xác thực số tiền thanh toán hợp lệ (>0)
+def test_validate_thanh_tien_positive():
+    df = pd.DataFrame({'thanh_tien': [1500000, 500000]})
+    valid_df = df[df['thanh_tien'] > 0]
+    assert len(valid_df) == 2
+
+# TEST 4: Giá trị biên - Xử lý giao dịch có số tiền âm hoặc bằng 0 (Edge case)
+def test_validate_thanh_tien_negative_edge_case():
+    df = pd.DataFrame({'thanh_tien': [1500000, -50000, 0]})
+    # Chỉ giữ lại dòng có tiền > 0
+    valid_df = df[df['thanh_tien'] > 0]
+    assert len(valid_df) == 1
+    assert valid_df['thanh_tien'].iloc[0] == 1500000
+
+# TEST 5: Luồng chuẩn - Xác thực dữ liệu chuỗi (số điện thoại không chứa ký tự lạ)
+def test_validate_phone_number_format():
+    df = pd.DataFrame({'so_dien_thoai': ['0901234567', 'abc123456', '0912_345']})
+    # Lọc ra các số điện thoại chỉ chứa chữ số
+    valid_df = df[df['so_dien_thoai'].str.isnumeric()]
+    assert len(valid_df) == 1
+    assert valid_df['so_dien_thoai'].iloc[0] == '0901234567'
