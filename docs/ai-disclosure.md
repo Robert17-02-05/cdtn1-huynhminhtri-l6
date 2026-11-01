@@ -49,3 +49,36 @@
 - **Chữ ký / Họ tên sinh viên:** Huỳnh Minh Trí  
 - **MSSV:** 2374802010514
 - **Ngày khai báo:** 17/10/2026
+
+
+
+<br>
+<hr style="border: 2px solid #2c3e50; border-radius: 5px;" />
+<br>
+
+
+
+
+# Khai báo sử dụng công cụ AI hỗ trợ (Bài tập 2)
+
+### I. BẢNG KHAI BÁO CHI TIẾT
+
+| Công cụ AI | Dùng vào việc gì | Áp dụng ở tệp / hàm nào | Em đã kiểm chứng thế nào |
+| :--- | :--- | :--- | :--- |
+| **Google Gemini** | Hỗ trợ gợi ý mã nguồn nạp dữ liệu vào mô hình Star Schema từ bảng Staging. | `src/load/dwh_builder.py` (hàm `build_star_schema`) | Chạy thử pipeline và mở file `.db` bằng SQLite để xác nhận dữ liệu đổ vào đúng 3 bảng `Fact_Sales`, `Dim_Time`, `Dim_Customer` mà không bị nhân đôi[cite: 9]. |
+| **Google Gemini** | Hỗ trợ cú pháp thư viện Streamlit và Matplotlib để vẽ biểu đồ doanh thu và SLA. | `src/dashboard.py` | Chạy lệnh `streamlit run` để kiểm tra thực tế trên trình duyệt, đảm bảo giao diện xử lý đúng dữ liệu và hiển thị đủ các đường cơ sở. |
+| **Google Gemini** | Gợi ý cấu trúc viết Unit Test (pytest) cho các trường hợp kiểm tra giá trị biên và dữ liệu sai. | `tests/test_transform.py` | Đọc hiểu từng test case, tự chạy lệnh `pytest` trên Terminal và xác nhận toàn bộ 5/5 test đều PASS[cite: 9]. |
+| **Google Gemini** | Hướng dẫn xử lý lỗi môi trường ảo (venv) trên Windows và gợi ý cấu trúc file tài liệu cấu hình. | `README.md`, `.env.example`, `docs/thay-doi-thiet-ke.md` | Đọc đối chiếu với yêu cầu của đề bài; tự clone source code ra một thư mục trống và chạy lại từ đầu theo đúng hướng dẫn trong README[cite: 9]. |
+
+*Ghi chú:*
+- Nếu ở bài nộp này sinh viên **hoàn toàn không sử dụng bất kỳ công cụ AI nào**, hãy ghi rõ `Không sử dụng công cụ AI` vào bảng.
+
+---
+
+### II. CAM KẾT VỀ LIÊM CHÍNH HỌC THUẬT
+
+> **"Tôi xác nhận đã đọc, hiểu và chịu trách nhiệm về toàn bộ nội dung mã nguồn cũng như tài liệu đã nộp. Tôi có thể giải thích được các đoạn mã do AI hỗ trợ sinh ra nếu được giảng viên yêu cầu."**
+
+- **Chữ ký / Họ tên sinh viên:** Huỳnh Minh Trí 
+- **MSSV:** 2374802010514
+- **Ngày khai báo:** 01/11/2026
