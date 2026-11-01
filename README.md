@@ -27,7 +27,7 @@ Hệ thống giải quyết bài toán tổng hợp dữ liệu doanh thu thủ 
 
 **Bước 1: Clone repository và di chuyển vào thư mục dự án**
 ```bash
-git clone <đường-dẫn-repo-github-của-bạn>
+git clone https://github.com/Robert17-02-05/cdtn1-huynhminhtri-l6.git
 cd cdtn1-huynhminhtri-l6
 **Bước 2: Tạo và kích hoạt môi trường ảo (venv)**
 python -m venv venv
@@ -36,3 +36,7 @@ python -m venv venv
 pip install pandas sqlite3 pytest streamlit matplotlib
 **Bước 4: Chạy luồng ETL và nạp dữ liệu vào Data Warehouse (DWH)**
 python src/load/dwh_builder.py
+**Bước 5: Chạy Unit Test kiểm tra lớp nghiệp vụ**
+python -m pytest tests/test_transform.py
+**Bước 6: Khởi chạy Dashboard trực quan**
+python -m streamlit run src/dashboard.py
