@@ -31,7 +31,7 @@ def build_star_schema(db_path="smart_crm_dwh.db"):
 
     # 3. Xây dựng bảng chiều khách hàng (Dim_Customer)
     if 'so_dien_thoai' in df_staging.columns and 'ten_khach' in df_staging.columns:
-        # BUG-03 Fix: Xóa khoảng trắng thừa hai đầu tên khách hàng trước khi làm sạch
+        # FIX BUG-03: Chuẩn hóa cắt khoảng trắng dư thừa ở hai đầu tên khách hàng
         df_staging['ten_khach'] = df_staging['ten_khach'].astype(str).str.strip() # Fix BUG-03
         
         dim_customer = df_staging[['so_dien_thoai', 'ten_khach']].dropna().drop_duplicates(subset=['so_dien_thoai']).reset_index(drop=True)
