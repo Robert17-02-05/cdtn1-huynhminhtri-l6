@@ -15,7 +15,7 @@ def build_star_schema(db_path="smart_crm_dwh.db"):
 
     # 2. Xây dựng bảng chiều thời gian (Dim_Time)
     # Chuyển đổi cột ngày sang định dạng datetime để tách thông tin (BUG-01 Fix)
-    df_staging['ngay'] = pd.to_datetime(df_staging['ngay'], errors='coerce')
+    df_staging['ngay'] = pd.to_datetime(df_staging['ngay'], errors='coerce') # Fix BUG-01
     
     dim_time = pd.DataFrame({
         'time_id': df_staging['ngay'].dt.strftime('%Y%m%d'),
@@ -23,7 +23,7 @@ def build_star_schema(db_path="smart_crm_dwh.db"):
         'thang': df_staging['ngay'].dt.month,
         'quy': df_staging['ngay'].dt.quarter,
         'nam': df_staging['ngay'].dt.year
-    }).dropna().drop_duplicates(subset=['time_id']).reset_index(drop=True) # BUG-02 Fix
+    }).dropna().drop_duplicates(subset=['time_id']).reset_index(drop=True) # Fix BUG-02
     
     # Lưu Dim_Time vào DB
     dim_time.to_sql('Dim_Time', conn, if_exists='replace', index=False)
@@ -32,7 +32,7 @@ def build_star_schema(db_path="smart_crm_dwh.db"):
     # 3. Xây dựng bảng chiều khách hàng (Dim_Customer)
     if 'so_dien_thoai' in df_staging.columns and 'ten_khach' in df_staging.columns:
         # BUG-03 Fix: Xóa khoảng trắng thừa hai đầu tên khách hàng trước khi làm sạch
-        df_staging['ten_khach'] = df_staging['ten_khach'].astype(str).str.strip()
+        df_staging['ten_khach'] = df_staging['ten_khach'].astype(str).str.strip() # Fix BUG-03
         
         dim_customer = df_staging[['so_dien_thoai', 'ten_khach']].dropna().drop_duplicates(subset=['so_dien_thoai']).reset_index(drop=True)
         dim_customer.to_sql('Dim_Customer', conn, if_exists='replace', index=False)
